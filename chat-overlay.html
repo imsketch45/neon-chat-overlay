@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: transparent;
+      font-family: 'Press Start 2P', cursive;
+      overflow: hidden;
+    }
+
+    .chat-container {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 16px;
+      border: 4px solid #00f0ff;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00f0ff, 0 0 40px #00f0ff inset;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .chat-message {
+      color: #fff;
+      padding: 8px;
+      margin-bottom: 8px;
+      animation: fadeIn 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container" id="chat">
+    <!-- Chat messages will appear here -->
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+
+    window.addEventListener('onEventReceived', function (event) {
+      if (!event.detail || !event.detail.event || !event.detail.event.message) return;
+      const messages = event.detail.event.message;
+
+      messages.forEach(msg => {
+        const div = document.createElement('div');
+        div.className = 'chat-message';
+        div.innerHTML = `<strong>${event.detail.event.name}:</strong> ${msg.text}`;
+        chat.appendChild(div);
+
+        // Optional: Auto-remove message after 15 seconds
+        setTimeout(() => {
+          div.remove();
+        }, 15000);
+      });
+    });
+  </script>
+</body>
+</html>
